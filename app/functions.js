@@ -31,10 +31,41 @@ exports.functionsAnswers = {
 
   makeClosures : function(arr, fn) {
 
+    var funcs = [],
+        x,
+        sq;
+
+    for (var i = 0; i < arr.length; i++) {
+
+      function closure(sq) {
+
+        function square() {
+
+          return sq;
+          
+        };
+
+        x = arr[i];
+        sq = fn(x);
+        funcs.push(square);
+
+      };
+
+      closure(sq);
+
+    };
+
+    return funcs;
+
   },
 
   partial : function(fn, str1, str2) {
-    
+
+    var partial = function(punctuation) {
+      return fn(str1,str2,punctuation);
+    }
+
+    return partial;
   },
 
   useArguments : function() {
@@ -64,10 +95,55 @@ exports.functionsAnswers = {
   },
 
   partialUsingArguments : function(fn) {
+    
+    var args =[],
+        args1 = [],
+        args2 = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      args1.push(arguments[i]);
+    };
+
+    var partial = function() {
+
+      args2 = [];
+
+      for (var i = 0; i < arguments.length; i++) {
+        args2.push(arguments[i]);
+      };
+
+      args = args1.concat(args2);
+      args.shift();
+
+      return fn.apply(this,args);
+    };
+
+    return partial;
 
   },
 
   curryIt : function(fn) {
+
+    var args = [],
+        length = fn.length;
+
+    var partial = function(x) {
+
+      args.push(arguments[0]);
+
+      if(args.length<length) {
+
+        return partial;
+
+      }
+      else {
+
+        return fn.apply(this,args);
+        
+      };
+    };
+
+    return partial;
 
   }
 };

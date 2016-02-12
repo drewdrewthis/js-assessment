@@ -38,7 +38,7 @@ exports.stringsAnswers = {
       
       count++;
 
-      if( str[i]==" " && count>cols){
+      if( str[i]==" " && count>=cols){
         marker = i;
       };
 
